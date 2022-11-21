@@ -1,12 +1,16 @@
-import TestComponent from "./components/TestComponent.jsx";
+
 
 import './App.css'
+import Header from "./components/Header.jsx";
+import Main from './components/Main';
 
 function App() {
   return (
     <>
-      <h1>Hack the Wallet</h1>
-      <TestComponent/>
+
+       <Header/>
+       <Main/>
+
     </>
   )
 }
