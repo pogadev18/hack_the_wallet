@@ -6,8 +6,9 @@ const Main = () => {
     return (
         <div
             style={{
+                padding: "30px",
                 width: width,
-                backgroundColor: "red",
+                backgroundColor: "gray",
                 height: height - 100,
                 display: "flex",
             }}

@@ -3,3 +3,14 @@ body{
     margin: 0px;
     padding: 0px;
 }
+
+.icon-office:before {
+    content: "\e903";
+  }
+
+  .sqoare-green{
+    background-color: green;
+  }
+  .square-red{
+    background-color: red;
+  }
