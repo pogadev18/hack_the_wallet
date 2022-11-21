@@ -3,12 +3,25 @@ import { FaBomb, FaSmile, FaSkull } from "react-icons/fa"
 import lettersLevel1 from "../stastic_data/lettersLevel1"
 import lettersLevel2 from "../stastic_data/lettersLevel2"
 import ModalArangeLetters from "../components/ModalArangeLetters"
-import { useDisclosure } from "@chakra-ui/react"
+import {
+    Button,
+    useDisclosure,
+    Flex,
+    Grid,
+    GridItem,
+    Box,
+    Center,
+    VStack,
+    useToast,
+} from "@chakra-ui/react"
 let dl = 0
 const GameBoardTest2 = () => {
+    const toastIdRef = useRef()
+    const toast = useToast()
+    const wh = window.innerHeight
     const { isOpen, onOpen, onClose } = useDisclosure()
     const lettersEl = useRef(new Array())
-    const word = "AGGRESSIVENESS"
+    const word = "HOUSE"
     let [lettersDescovered, setLettersDescovered] = useState(0)
     let [stop, setStop] = useState(true)
     let [numberOfLetters, setNumbersOfLetters] = useState(5)
@@ -18,7 +31,12 @@ const GameBoardTest2 = () => {
     let [wordSelected, setWordSelected] = useState([])
     // let [duplicatedLetters, setDuplicatedLetters] = useState(new Map())
     let [multiple, setMultiple] = useState([])
-    let [wasSelected, setWasSelected] = useState(false)
+
+    function close() {
+        if (toastIdRef.current) {
+            toast.close(toastIdRef.current)
+        }
+    }
 
     const checkDuplicateLetters = () => {
         let NO_OF_CHARS = 256
@@ -71,6 +89,32 @@ const GameBoardTest2 = () => {
         if (counter == numberOfLetters) {
             setStop(false)
             console.log(`Cumpara litere`)
+            toastIdRef.current = toast({
+                // title: "Account created.",
+                // description: "We've created your account for you.",
+                // status: "success",
+                duration: null,
+                // isClosable: true,
+                render: () => (
+                    <Box color="white" p={3} bg="#141414" w="500px">
+                        <Button
+                            onClick={() => {
+                                setNumbersOfLetters(numberOfLetters + 5)
+                                console.log(numberOfLetters)
+
+                                setStop(true)
+                                close()
+                            }}
+                            variant="primary"
+                        >
+                            Buy 1 Round
+                        </Button>
+                        <Button onClick={close} type="button" variant="outline">
+                            Close last toast
+                        </Button>
+                    </Box>
+                ),
+            })
         }
 
         // console.log("ceva")
@@ -78,164 +122,151 @@ const GameBoardTest2 = () => {
 
     return (
         <>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "5px",
-                    margin: "10px",
-                }}
-            >
-                <button
-                    style={{
-                        backgroundColor: "blue",
-                        width: "200px",
-                        height: "60px",
-                        color: "white",
-                    }}
-                    onClick={() => {
-                        mixLetters()
-                        console.log(mixedLetters)
-                        checkDuplicateLetters()
-                    }}
-                >
-                    START GAME
-                </button>
-                <button
-                    style={{
-                        backgroundColor: "blue",
-                        width: "200px",
-                        height: "60px",
-                        color: "white",
-                    }}
-                    onClick={() => {
-                        setNumbersOfLetters(numberOfLetters + 5)
-                        console.log(numberOfLetters)
+            <Grid templateColumns="repeat(4, 1fr)">
+                <GridItem colSpan={1} bg="#141414">
+                    <Box m="auto" mt="50px">
+                        <VStack>
+                            <Button
+                                variant="primary"
+                                onClick={() => {
+                                    mixLetters()
+                                    console.log(mixedLetters)
+                                    checkDuplicateLetters()
+                                }}
+                            >
+                                START GAME
+                            </Button>
+                            <Button
+                                variant="primary"
+                                onClick={() => {
+                                    setNumbersOfLetters(numberOfLetters + 5)
+                                    console.log(numberOfLetters)
 
-                        setStop(true)
-                    }}
-                >
-                    BUY A ROUND
-                </button>
-                <button
-                    style={{
-                        backgroundColor: "blue",
-                        width: "200px",
-                        height: "60px",
-                        color: "white",
-                    }}
-                    onClick={() => {
-                        checkDuplicateLetters()
-                        // setLettersDescovered((n) => n + 6)
-                        // setMultiple(ddLettersArray)
-                        // showDuplicated()
-                        // console.log(chackIfWordHaveDoubleLetters())
-                        // console.log(checkDuplicateLetters())
-                        // console.log(doubleLetters())
-                        // var2duplicate()
-                        // console.log(`litere din map - ${showDuplicated()}`)
-                    }}
-                >
-                    SHOW DUPLICATES
-                </button>
-            </div>
-            <div
-                style={{
-                    width: "400px",
-                    height: "max-content",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "4px",
-                }}
-            >
-                {mixedLetters.map((letter, index) => {
-                    return (
-                        <div
-                            ref={(letter) =>
-                                (lettersEl.current[index] = letter)
-                            }
-                            key={index}
-                            onClick={(event) => {
-                                if (stop) {
-                                    if (!event.currentTarget.id) {
-                                        event.currentTarget.id = counter
-                                    } else {
-                                        return
-                                    }
+                                    setStop(true)
+                                }}
+                            >
+                                BUY A ROUND
+                            </Button>
+                            <Button
+                                variant="primary"
+                                onClick={() => {
+                                    checkDuplicateLetters()
+                                    // setLettersDescovered((n) => n + 6)
+                                    // setMultiple(ddLettersArray)
+                                    // showDuplicated()
+                                    // console.log(chackIfWordHaveDoubleLetters())
+                                    // console.log(checkDuplicateLetters())
+                                    // console.log(doubleLetters())
+                                    // var2duplicate()
+                                    // console.log(`litere din map - ${showDuplicated()}`)
+                                }}
+                            >
+                                SHOW DUPLICATES
+                            </Button>
+                        </VStack>
+                    </Box>
+                </GridItem>
 
-                                    if (event.currentTarget.id) {
-                                        setCounter(counter + 1)
-                                        //   console.log(index)
-                                        console.log(counter)
-                                        // console.log(numberOfLetters)
-                                        //   console.log(counter)
-                                        //   compareLetters()
-                                        setNewSelectedLetters(letter)
-                                        let x = word.includes(letter)
-                                        if (x) {
-                                            setLettersDescovered(
-                                                lettersDescovered + 1
-                                            )
-
-                                            event.currentTarget.style.backgroundColor =
-                                                "salmon"
-                                            setWordSelected([
-                                                ...wordSelected,
-                                                letter,
-                                            ])
-
-                                            //   console.log(lettersDescovered + 1)
-                                            //   console.log(dl)
-                                            //   console.log(word.length)
-
-                                            if (
-                                                lettersDescovered + 1 + dl ==
-                                                word.length
-                                            ) {
-                                                onOpen()
-                                                console.log("openModal")
-                                            }
+                <GridItem colSpan={2} h={wh - 100} bg="black">
+                    <Box w="625px" m="auto" mt="50px">
+                        <Flex wrap="wrap" gap="5px">
+                            {mixedLetters.map((letter, index) => {
+                                return (
+                                    <Center
+                                        w="100px"
+                                        h="100px"
+                                        bg="#212121"
+                                        color="white"
+                                        fontSize="34px"
+                                        ref={(letter) =>
+                                            (lettersEl.current[index] = letter)
                                         }
+                                        key={index}
+                                        onClick={(event) => {
+                                            if (stop) {
+                                                if (!event.currentTarget.id) {
+                                                    event.currentTarget.id =
+                                                        counter
+                                                } else {
+                                                    return
+                                                }
 
-                                        //   console.log("litera exista " + x)
-                                        lettersEl.current[index].innerHTML =
-                                            letter
-                                    } else {
-                                        return
-                                    }
-                                }
-                            }}
-                            style={{
-                                fontSize: "35px",
-                                backgroundColor: "green",
-                                width: "70px",
-                                height: "70px",
-                            }}
-                        ></div>
-                    )
-                })}
-            </div>
+                                                if (event.currentTarget.id) {
+                                                    setCounter(counter + 1)
+                                                    //   console.log(index)
+                                                    console.log(counter)
+                                                    // console.log(numberOfLetters)
+                                                    //   console.log(counter)
+                                                    //   compareLetters()
+                                                    setNewSelectedLetters(
+                                                        letter
+                                                    )
+                                                    let x =
+                                                        word.includes(letter)
+                                                    if (x) {
+                                                        setLettersDescovered(
+                                                            lettersDescovered +
+                                                                1
+                                                        )
 
-            <div
-                style={{
-                    width: "500px",
-                    height: "max-content",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "4px",
-                    fontSize: "40px",
-                }}
-            >
-                {wordSelected} {""}
-                {multiple.map((el) => {
-                    return el
-                })}
-                <br />
-                {/* <div>{`total letters - ${word.length}`}</div> */}
-                <br />
-                <div>{`you found - ${lettersDescovered} - from - ${word.length}`}</div>
-            </div>
+                                                        event.currentTarget.style.backgroundColor =
+                                                            "#3FD8BE"
+                                                        event.currentTarget.style.color =
+                                                            "#121212"
+                                                        setWordSelected([
+                                                            ...wordSelected,
+                                                            letter,
+                                                        ])
 
+                                                        //   console.log(lettersDescovered + 1)
+                                                        //   console.log(dl)
+                                                        //   console.log(word.length)
+
+                                                        if (
+                                                            lettersDescovered +
+                                                                1 +
+                                                                dl ==
+                                                            word.length
+                                                        ) {
+                                                            onOpen()
+                                                            console.log(
+                                                                "openModal"
+                                                            )
+                                                        }
+                                                    }
+
+                                                    //   console.log("litera exista " + x)
+                                                    lettersEl.current[
+                                                        index
+                                                    ].innerHTML = letter
+                                                } else {
+                                                    return
+                                                }
+                                            }
+                                        }}
+                                    ></Center>
+                                )
+                            })}
+                        </Flex>
+                    </Box>
+                </GridItem>
+
+                <GridItem colSpan={1} bg="#141414">
+                    <VStack>
+                        <Box mt="50px">
+                            <Box bg="#212121" w="200px" color="white">
+                                {wordSelected} {""}
+                                {multiple.map((el) => {
+                                    return el
+                                })}
+                            </Box>
+                            <Box bg="#212121" w="200px" color="white">
+                                {`you found - ${lettersDescovered} - from - ${word.length}`}
+                            </Box>
+                        </Box>
+                    </VStack>
+                </GridItem>
+            </Grid>
             <ModalArangeLetters isOpen={isOpen} onClose={onClose} />
         </>
     )

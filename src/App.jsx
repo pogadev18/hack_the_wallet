@@ -1,18 +1,15 @@
+import "./App.css"
+import Header from "./components/Header.jsx"
 
-
-import './App.css'
-import Header from "./components/Header.jsx";
-import Main from './components/Main';
+import GameBoardTest2 from "./components/GameBoardTest2"
 
 function App() {
-  return (
-    <>
-
-       <Header/>
-       <Main/>
-
-    </>
-  )
+    return (
+        <>
+            <Header />
+            <GameBoardTest2 />
+        </>
+    )
 }
 
 export default App
